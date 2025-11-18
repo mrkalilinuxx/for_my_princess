@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>For My Princess 💫</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #050816, #020617, #000);
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 480px;
+      height: 90vh;
+      max-height: 780px;
+      border-radius: 24px;
+      background: radial-gradient(circle at top, #020617, #000);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      padding: 14px 14px 18px;
+      display: none;
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: radial-gradient(circle at left, #22c1c3, #4f46e5);
+      color: #e5e7eb;
+      margin-bottom: 4px;
+    }
+
+    h1 {
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      margin-top: 3px;
+    }
+
+    /* STAR SKY GAME */
+
+    .sky-wrapper {
+      position: relative;
+      width: 100%;
+      height: calc(100% - 120px);
+      border-radius: 18px;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #020617, #020617 40%, #000 100%);
+      margin-top: 8px;
+    }
+
+    .sky-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(56, 189, 248, 0.45), transparent 55%),
+        radial-gradient(circle at 80% 20%, rgba(94, 234, 212, 0.35), transparent 60%),
+        radial-gradient(circle at 50% 90%, rgba(248, 250, 252, 0.25), transparent 60%);
+      opacity: 0.8;
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+
+    .star {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: radial-gradient(circle, #e5e5f5, #a5b4fc);
+      box-shadow:
+        0 0 10px rgba(129, 140, 248, 0.9),
+        0 0 18px rgba(59, 130, 246, 0.6);
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      animation: twinkle 2.8s infinite ease-in-out;
+    }
+
+    .star:nth-child(3n) {
+      width: 10px;
+      height: 10px;
+      animation-duration: 3.4s;
+    }
+
+    .star:nth-child(4n) {
+      width: 8px;
+      height: 8px;
+      animation-duration: 2.2s;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.3); }
+    }
+
+    .star.collected {
+      animation: pop 0.35s ease-out forwards;
+      box-shadow: none;
+    }
+
+    @keyframes pop {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -80%) scale(0.1); opacity: 0; }
+    }
+
+    .bottom-panel {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .prompt {
+      text-align: center;
+      font-size: 0.86rem;
+      color: #c7d2fe;
+    }
+
+    .message-box {
+      min-height: 46px;
+      font-size: 0.83rem;
+      line-height: 1.3;
+      padding: 7px 9px;
+      border-radius: 14px;
+      border: 1px solid rgba(129, 140, 248, 0.6);
+      background: linear-gradient(
+        135deg,
+        rgba(15, 23, 42, 0.95),
+        rgba(30, 64, 175, 0.85)
+      );
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.9);
+      text-align: center;
+    }
+
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      opacity: 0.85;
+    }
+
+    .bar {
+      flex: 1;
+      height: 5px;
+      border-radius: 999px;
+      background: rgba(30, 64, 175, 0.7);
+      overflow: hidden;
+      margin: 0 8px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #a855f7, #22c55e, #facc15);
+      transition: width 0.3s ease-out;
+    }
+
+    .btn-main {
+      margin: 4px auto 0;
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #a855f7, #ec4899);
+      color: #f9fafb;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(76, 29, 149, 0.9);
+    }
+
+    .btn-main span {
+      font-size: 1.1rem;
+    }
+
+    .btn-main:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 16px rgba(76, 29, 149, 0.8);
+    }
+
+    /* VIDEO SCREEN */
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      height: calc(100% - 120px);
+      margin-top: 10px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #020617;
+      box-shadow: 0 16px 38px rgba(15, 23, 42, 0.9);
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .final-text {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      text-align: center;
+      line-height: 1.4;
+      opacity: 0.9;
+    }
+
+    .final-text strong {
+      font-size: 0.93rem;
+    }
+
+    .tiny {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      margin-top: 3px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- STAR GAME SCREEN -->
+    <div class="screen active" id="star-screen">
+      <div class="header">
+        <div class="tag">
+          <span>✨</span> For My Princess
+        </div>
+        <h1>Starry Night of Reasons</h1>
+        <p class="subtitle">Tap the stars, my princess. Each one is a little truth about you. 💫</p>
+      </div>
+
+      <div class="sky-wrapper" id="sky">
+        <div class="sky-gradient"></div>
+        <!-- stars will be added here by JavaScript -->
+      </div>
+
+      <div class="bottom-panel">
+        <p class="prompt">Tap any glowing star to read what my heart has been trying to say. 💙</p>
+        <div class="message-box" id="message-box">
+          The sky is full tonight… maybe start with the brightest star you see. ✨
+        </div>
+        <div class="progress-row">
+          <span id="progress-text">Stars discovered: 0 / 20</span>
+          <div class="bar">
+            <div class="bar-fill" id="bar-fill"></div>
+          </div>
+          <span id="hint-label">Keep going 💫</span>
+        </div>
+        <div style="text-align:center;">
+          <button id="watch-btn" class="btn-main" style="display:none;">
+            Watch our story <span>🎬</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO SCREEN -->
+    <div class="screen" id="video-screen">
+      <div class="header">
+        <div class="tag">
+          <span>🎥</span> Our Little Universe
+        </div>
+        <h1>For My Princess</h1>
+        <p class="subtitle">This is just us, our moments, and the way I see you. 🤍</p>
+      </div>
+
+      <div class="video-wrapper">
+        <!-- 🔴 IMPORTANT: put your YouTube EMBED link in src below -->
+        <iframe
+          id="love-video"
+          src="https://cdn.jsdelivr.net/gh/mrkalilinuxx/for_my_princess@main/princess_video.mp4.mp4"
+          title="For My Princess"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+        </iframe>
+      </div>
+
+      <div class="final-text">
+        <strong>For my princess, my favourite human.</strong><br />
+        Thank you for being my safest place, my loudest laugh, and the most
+        beautiful part of every day. No matter how many skies I look at,<br />
+        I’ll always choose the one that has you in it. 💙
+      </div>
+      <p class="tiny">
+        (If you ever forget how loved you are, come back to this night sky.)
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Messages that appear when she taps stars
+    const starMessages = [
+      "You make every single day feel a little less heavy and a lot more magical.",
+      "Your smile is honestly my favourite view in this entire universe.",
+      "When you laugh, it feels like the whole room gets lighter.",
+      "You don’t even realise how kind and soft your heart actually is.",
+      "You make even the most boring days feel special, just by being there.",
+      "Every touch of yours makes me feel like i am in our fantasy world.",
+      "I love the way you say my name, like it actually belongs to you.",
+      "Your hug feels more like home than any place I have ever been to.",
+      "I Love You My LiL princess.",
+      "You understand my silence better than most people understand my words.",
+      "With you, small things become big memories that I never want to forget.",
+      "You’re not just my princess, you’re my favourite person, in every timeline.",
+      "You deserve softness, patience, and love that never makes you doubt yourself.",
+      "Every time I see you, a part of me quietly says, ‘There goes my whole heart.’",
+      "I love the way you care, even when you pretend you don’t.",
+      "You are the calm in my chaos and the light in my overthinking.",
+      "If I had to choose you in every lifetime, I would, without even thinking.",
+      "You are my best dream, my answered prayer, my daily wish come true.",
+      "even when i am not in my best version you are there with me.",
+      "No matter what happens, my heart will always belong only to you more than that you are my heart my wifee."
+    ];
+
+    const sky = document.getElementById("sky");
+    const messageBox = document.getElementById("message-box");
+    const progressText = document.getElementById("progress-text");
+    const barFill = document.getElementById("bar-fill");
+    const hintLabel = document.getElementById("hint-label");
+    const watchBtn = document.getElementById("watch-btn");
+    const starScreen = document.getElementById("star-screen");
+    const videoScreen = document.getElementById("video-screen");
+
+    let discovered = 0;
+    const totalStars = starMessages.length;
+
+    progressText.textContent = `Stars discovered: ${discovered} / ${totalStars}`;
+
+    // Create stars at random positions
+    for (let i = 0; i < totalStars; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.dataset.index = i;
+
+      // Random safe positions (avoiding too close to bottom panel)
+      const top = Math.random() * 65 + 10;   // between 10% and 75%
+      const left = Math.random() * 80 + 10;  // between 10% and 90%
+      star.style.top = top + "%";
+      star.style.left = left + "%";
+
+      star.addEventListener("click", () => handleStarTap(star));
+      sky.appendChild(star);
+    }
+
+    function handleStarTap(star) {
+      if (star.classList.contains("collected")) return;
+
+      const idx = parseInt(star.dataset.index, 10);
+      const msg = starMessages[idx];
+      star.classList.add("collected");
+
+      discovered++;
+      messageBox.textContent = msg;
+      progressText.textContent = `Stars discovered: ${discovered} / ${totalStars}`;
+
+      const percent = (discovered / totalStars) * 100;
+      barFill.style.width = percent + "%";
+
+      if (discovered === 5) {
+        hintLabel.textContent = "You can keep going or watch your surprise soon 💫";
+      } else if (discovered === 10) {
+        hintLabel.textContent = "You’ve seen so much of my heart already 🥺";
+      } else if (discovered === totalStars) {
+        hintLabel.textContent = "That’s all of them. My whole sky is you. 🤍";
+        watchBtn.style.display = "inline-flex";
+      }
+
+      // If she has opened at least 7 stars, gently reveal the button
+      if (discovered >= 7 && watchBtn.style.display === "none") {
+        watchBtn.style.display = "inline-flex";
+      }
+    }
+
+    // Safety: after 25 seconds, show the button in case she doesn't tap much
+    setTimeout(() => {
+      if (watchBtn.style.display === "none") {
+        watchBtn.style.display = "inline-flex";
+        hintLabel.textContent = "Whenever you’re ready, you can watch your surprise 🎬";
+      }
+    }, 25000);
+
+    watchBtn.addEventListener("click", () => {
+      starScreen.classList.remove("active");
+      videoScreen.classList.add("active");
+    });
+  </script>
+</body>
+</html>
